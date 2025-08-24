@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fafaff; margin: 0; }
+    .topbar { background: #fff; padding: 1em; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; justify-content: flex-end; }
+    .btn-upload { padding: 0.5em 1em; border-radius: 20px; border: none; background: #2979ff; color: #fff; cursor: pointer; font-weight: bold; transition: background 0.2s;}
+    .btn-upload:hover { background: #1565c0;}
+    .gallery { display: flex; flex-wrap: wrap; gap: 12px; padding: 2em 2em 0 2em; }
+    .gallery img { border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); height: 180px; object-fit: cover;}
+    .center { text-align: center; color: #555;}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="{{ url_for('upload') }}"><button class="btn-upload">Upload/Login</button></a>
+  </div>
+  <div class="gallery">
+    {% for file in files %}
+      <img src="{{ url_for('send_file', filename=file) }}">
+    {% endfor %}
+  </div>
+  {% if not files %}
+    <div class="center"><h3>No photos yet.</h3></div>
+  {% endif %}
+</body>
+</html>

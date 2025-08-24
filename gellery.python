@@ -1,0 +1,36 @@
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash
+import os
+
+app = Flask(__name__)
+app.secret_key = "your_secret_key"
+UPLOAD_FOLDER = 'static/uploads'
+PASSWORD = "photo@123"  # Change to your desired password
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+@app.route("/")
+def home():
+    files = os.listdir(UPLOAD_FOLDER)
+    return render_template("gallery.html", files=files)
+
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    if request.method == "POST":
+        password = request.form.get("password")
+        if password != PASSWORD:
+            flash("❌ Wrong password!")
+            return redirect(url_for("upload"))
+        files = request.files.getlist("file")
+        for file in files:
+            if file and file.filename:
+                file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+        return redirect(url_for("home"))
+    return render_template("upload.html")
+
+@app.route('/uploads/<filename>')
+def send_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fafaff; margin: 0;}
+    .container { 
+      max-width: 420px; 
+      margin: 60px auto; 
+      background: #fff; 
+      padding: 2em 2.5em; 
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(41,121,255,0.09);
+    }
+    .input-style { width: 100%; padding: 0.7em; border-radius: 6px; margin: 0.5em 0; border: 1px solid #d7e1ec;}
+    .btn-submit { width: 100%; padding: 0.7em; border-radius: 20px; border: none; background: #2979ff; color: #fff; font-weight: bold; font-size: 1em; cursor: pointer; transition: background 0.2s;}
+    .btn-submit:hover { background: #1565c0;}
+    .showpass { margin-left: 0.3em;}
+    .err { color: #ff4b4b; margin-bottom: 1em;}
+    .back-link { display: block; text-align: right; margin-top: 1em; text-decoration: underline; color: #2979ff;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align:center;">Upload Photos</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="err">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data">
+      <input class="input-style" type="password" name="password" placeholder="Password" id="pwd" required>
+      <input type="checkbox" id="showPassword" class="showpass" onclick="togglePass()"> Show password<br>
+      <input class="input-style" type="file" name="file" multiple accept="image/*" required>
+      <input class="btn-submit" type="submit" value="Upload">
+    </form>
+    <a href="{{ url_for('home') }}" class="back-link">← Back to Gallery</a>
+  </div>
+  <script>
+    function togglePass() {
+      var pwd = document.getElementById('pwd');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+    }
+  </script>
+</body>
+</html>
